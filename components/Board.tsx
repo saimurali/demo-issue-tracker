@@ -11,6 +11,7 @@ import {
   type DragOverEvent,
 } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
+import { Plus } from "lucide-react";
 import type { Issue, Status } from "@/lib/types";
 import { STATUSES } from "@/lib/types";
 import Column from "./Column";
@@ -125,19 +126,25 @@ export default function Board() {
 
   return (
     <>
-      <form className="new-issue" onSubmit={handleAdd}>
+      <form className="flex gap-2 mb-6" onSubmit={handleAdd}>
         <input
+          className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
           placeholder="Add a new issue..."
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <button type="submit" disabled={!title.trim()}>
+        <button
+          type="submit"
+          disabled={!title.trim()}
+          className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+        >
+          <Plus size={15} />
           Add
         </button>
       </form>
 
       {loading ? (
-        <div className="empty">Loading...</div>
+        <div className="text-sm text-gray-400 dark:text-gray-500 text-center py-12">Loading...</div>
       ) : (
         <DndContext
           sensors={sensors}
@@ -145,7 +152,7 @@ export default function Board() {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <div className="board">
+          <div className="grid grid-cols-4 gap-4">
             {STATUSES.map((s) => (
               <Column
                 key={s.key}
